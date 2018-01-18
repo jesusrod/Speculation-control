@@ -45,10 +45,11 @@ Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
 
 #Process to unzip the Speculation-Control zip file for older PowerShell
 
-shell_app=new-object -com shell.application
-$zip_file = $shell_app.namespace((Get-Location).Path + "\$file")
-$destination = $shell_app.namespace((Get-Location).Path)
-$destination.Copyhere($zip_file.items())
+$shell = New-Object -ComObject Shell.Application
+$zip_file = $shell.NameSpace($output)
+foreach($item in $zip_file.Items()) {
+    $shell.Namespace($PSScriptRoot).CopyHere($item)
+}
 
 #end of Process
 
